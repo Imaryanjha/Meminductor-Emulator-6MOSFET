@@ -1,0 +1,47 @@
+Chua's Chaotic Oscillator with Meminductor
+
+.include models.mod
+
+* Supply Voltages for Op-Amp (NIC)
+VCC VCC 0 5
+VEE VEE 0 -5
+
+* Meminductor Emulator (Your design)
+* Replace with your meminductor subcircuit
+* For now, using simplified meminductor model
+
+* Chaotic Oscillator Components
+* From paper: C1=10nF, C2=65nF, L=72mH, R1=100, Ra=Rb=2k
+
+C1 VY 0 10n
+C2 VX 0 65n
+L1 IL VX 72m Rser=100
+
+* Negative Impedance Converter (NIC) for negative resistance
+* Using op-amp based NIC
+* This replaces Chua's diode
+
+* Meminductor ML connected between VY and ground
+* Replace with your meminductor
+X_ML VY 0 meminductor
+
+* Current sensing
+VIL IL 0 DC 0
+
+* Initial conditions for chaos
+.ic V(VY)=0.1 V(VX)=0 I(VIL)=0
+
+* Transient analysis for chaos (longer time)
+.tran 0.1u 10m
+
+* Print state variables
+.print tran V(VY) V(VX) I(VIL)
+
+* Meminductor subcircuit (your design)
+.subckt meminductor a b
+* Insert your 9-MOSFET meminductor here
+* For now, placeholder
+X1 a b meminductor_core
+.ends
+
+.end

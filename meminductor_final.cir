@@ -1,0 +1,41 @@
+Meminductor Emulator - Final Version
+
+* Include MOSFET Models
+.include models.mod
+
+* Supply Voltages
+VDD VDD 0 0.9
+VSS VSS 0 -0.9
+
+* Bias Voltages
+VB1 VB1 0 0.8
+VB2 VB2 0 -0.2
+
+* Capacitors
+C1 X 0 1p
+C2 Y 0 15p
+
+* MOSFETs - Proper Connections
+M1 X VB1 VSS VSS nmos_180n w=1u l=0.18u
+M2 VDD Vin Y VDD pmos_180n w=1u l=0.18u
+M3 Y Vin X VSS nmos_180n w=1u l=0.18u
+M4 Y VB2 VDD VDD pmos_180n w=1u l=0.18u
+
+* OTA Stage (M5-M9)
+M5 X X VSS VSS nmos_180n w=1u l=0.18u
+M6 X X VSS VSS nmos_180n w=1u l=0.18u
+M7 Vout X VSS VSS nmos_180n w=1u l=0.18u
+M8 Vout X VSS VSS nmos_180n w=1u l=0.18u
+M9 Vout X VDD VDD pmos_180n w=1u l=0.18u
+
+* Input Signal with Current Sense
+Vsense Vin Vin_sense DC 0
+Vinput Vin_sense 0 SIN(0 0.1 10k)
+
+* Transient Analysis
+.tran 0.1u 1ms
+
+* Print all important signals
+.print tran V(Vin_sense) I(Vsense) V(X) V(Y) V(Vout)
+
+.end
